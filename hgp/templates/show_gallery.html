@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block body %}
+{% if session.logged_in %}
+<!-- cambiar para que permita agregar fotos -->
+<form action="{{ url_for('add_photo', gallery_id=gallery.id) }}" method=post class=add-photo enctype=multipart/form-data>
+<dl>
+<dt>Titulo:
+<dd><input type=text size=50 name=title>
+<dt>Descripcion:
+<dd><textarea name=description rows=5 cols=40></textarea>
+<dt>Archivo:
+<dd><input type=file size=50 name=file>
+<dd><input type=submit value=Crear>
+</dl>
+</form>
+{% endif %}
+<div class=gallery>
+    <h2>{{ gallery.title }} creada el {{gallery.timestamp}}</h2>
+    {{ gallery.description|safe }}
+    <div class=photos>
+       {% for pic in gallery.photos %}
+       <div class=photo>
+        <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}">
+       </div>
+       {% endfor %}
+    <div>
+</div>
+{% if session.logged_in %}
+<a href="{{url_for('remove_gallery', gallery_id=gallery.id)}}">Eliminar Galería</a>
+{% endif %}
+<a href="{{ url_for('show_galleries') }}">Volver</a>
+{% endblock %}

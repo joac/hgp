@@ -19,7 +19,7 @@ class Photo(Entity):
 class Gallery(Entity):
     
     title = Field(Unicode(60))
-    timestamp = Field(Integer)
+    timestamp = Field(Integer, default=datetime.datetime.now)
     description = Field(UnicodeText)
     photos = OneToMany('Photo')
     
@@ -33,3 +33,9 @@ class Tag(Entity):
 
     def __repr__(self):
         return '<Tag "%s">' % self.name
+
+def setupDb():
+    setup_all()
+
+def commit():
+    session.commit()

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body %}
+{% if session.logged_in %}
+<form action="{{ url_for('add_gallery') }}" method=post class=add-entry>
+<dl>
+<dt>Titulo:
+<dd><input type=text size=50 name=title>
+<dt>Descripcion:
+<dd><textarea name=description rows=5 cols=40></textarea>
+<dd><input type=submit value=Crear>
+</dl>
+</form>
+{% endif %}
+<div class=galleries>
+{% for gal in galleries %}
+<div id={{gal.id}}>
+    <h2>{{ gal.title }}</h2>
+    {{ gal.description|safe }}
+    <a href="{{url_for('show_gallery', gallery_id=gal.id)}}">ver</a>
+    </div>
+{% else %}
+<div><em>No hay ninguna galeria</em><div>
+{% endfor %}
+</div>
+{% endblock %}
