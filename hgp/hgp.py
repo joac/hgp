@@ -3,7 +3,7 @@ import models
 import os
 import hashlib
 from flask import Flask, request, session, g, redirect, url_for, \
-    abort, render_template, flash, send_from_directory
+    abort, render_template, flash, send_from_directory, jsonify
 
 from werkzeug import secure_filename
 from functools import wraps
@@ -32,37 +32,68 @@ def logged(f):
 
     return inner 
 
+
+
 @app.route('/portfolio')
 def portfolio():
     """Muestra el portfolio con las fotos"""
-    tag = models.Tag.get_by(name='portfolio')
-    return render_template('show_gallery.html', tag = tag )
+    return photos_by_tag(u'portfolio')
 
 @app.route('/condor')
 def condor():
     """Muestra las fotos con el tag condor"""
-    pass
+    return photos_by_tag(u'condor')
 
 @app.route('/press')
 def press():
     """Muestra las fotos con el tag prensa"""
-    pass
+    return photos_by_tag(u'prensa')
 
 @app.route('/contact')
 def contact():
     """Muestra la información de contacto"""
     pass
 
-@app.route('/photo/<int:photo_id>')
-def devolver_json_foto():
+
+@app.route('/photo/get')
+def get_json_photo():
     """Devuelve un diccionario json con el nombre, la descripcion, 
         la url y el id de una foto"""
-    pass
+    
+    action = request.args.get('action', None, type=str)
+    tag = request.args.get('tag', None, type=str)
+    index = request.args.get('index', None, type=int)
+    actions = ['prev', 'next'] 
+
+    if action in actions and tag is not None and index is not None:
+        tag = models.Tag.get_by(name=unicode(tag))
+        max_index = len(tag.photos) - 1   
+        if action == 'prev' and index > 0:
+            index -= 1
+        elif action == 'next' and index < max_index:
+            index += 1
+        
+        if  index < 0:
+            index = 0
+        elif index > max_index:
+            index = max_index
+
+        return_dict = {}
+        photo = tag.photos[index]
+        return_dict['title'] = photo.title
+        return_dict['description'] = photo.description
+        return_dict['url'] = url_for('uploaded_file', filename=photo.filehash )
+        return_dict['index'] = index
+        return jsonify(return_dict);
+    abort(404)
 
 @app.route('/photo/tag/<string:tag_name>')
 def photos_by_tag(tag_name):
     """Lleva a la vista de fotos con ese tag"""
-    pass
+    tag = models.Tag.get_by(name=tag_name)
+    pic = tag.photos[0]
+    max_index = len(tag.photos) - 1  
+    return render_template('photo.html', tag = tag, pic=pic, max_index=max_index )
 
 @app.route('/tag/delete/<string:tag_name>')
 @logged
@@ -143,67 +174,11 @@ def erase_photo(photo_id):
    return redirect(url_for('ver_todas_las_fotos'))
 
 
-
-
-
-
-
-
-
-
-
-
-###################################################
-#Gestion de galerias
-###################################################
-
-#ver lista
-@app.route('/gallery/all')
-def show_galleries():
-    galleries = [dict(id=gal.id, title=gal.title, description=gal.description ) for gal in models.Gallery.query.all()]
-    return render_template('show_galleries.html', galleries=galleries)
-
-#agregar una galeria
-
-@app.route('/gallery/add', methods=['POST'])
-def add_gallery():
-    if not session.get('logged_in'):
-        abort(401)
-    models.Gallery(title=request.form['title'], description=request.form['description'])
-    models.commit()
-    flash('Nueva Galeria Creada')
-    return redirect(url_for('show_galleries'))
-
-#ver una sola galeria
-
-@app.route('/gallery/show/<int:gallery_id>')
-def show_gallery(gallery_id):
-    gallery = models.Gallery.query.filter_by(id=gallery_id).one()
-    return render_template('show_gallery.html', gallery = gallery )
-
-#borrar una galeria
-
-@app.route('/gallery/remove/<int:gallery_id>')
-def remove_gallery(gallery_id):
-    if not session.get('logged_in'):
-        abort(401)
-    gallery = models.Gallery.query.filter_by(id=gallery_id).one()
-    gallery.delete()
-    models.commit()
-    flash("Se elimino la galeria '%s'" % gallery.title)
-    return redirect(url_for('show_galleries'))
-    
-@app.route('/gallery/edit/<int:gallery_id>')
-def edit_gallery(gallery_id):
-    abort(404)
-
 ###################################################
 # Gestion de Fotos
 ###################################################
 def delete_uploaded(name):
     os.unlink(os.path.join(UPLOAD_FOLDER, name))
-
-    
 
 def get_file_extension(filename):
     return filename.rsplit('.', 1)[1]
@@ -212,37 +187,6 @@ def allowed_file(filename):
     return '.' in filename and \
                get_file_extension(filename).lower() in ALLOWED_EXTENSIONS
 
-@app.route('/gallery/<int:gallery_id>/add/photo', methods=['POST'])
-def add_photo(gallery_id):
-    if not session.get('logged_in'):
-        abort(401)
-    archive = request.files['file']
-    if allowed_file(archive.filename):
-        hashname =  hashlib.sha1(archive.read()).hexdigest()
-        archive.seek(0)
-        hashname += '.' + get_file_extension(archive.filename)
-        filename = os.path.join(UPLOAD_FOLDER, hashname)
-        archive.save(filename)
-        
-        gallery = models.Gallery.query.filter_by(id=gallery_id).one()
-        photo = models.Photo(title=request.form['title'], 
-                            description=request.form['description'],
-                            filehash=hashname,
-                            gallery=gallery
-                            ) 
-        models.commit()
-        flash('Se subio el archivo: %s y se renombro: "%s"' % (archive.filename, filename))
-    else:
-        flash('Error al subir el archivo %s' % archive.filename)
-    return redirect( url_for('show_gallery', gallery_id=gallery_id) )
-    
-def remove_photo():
-    if not session.get('logged_in'):
-        abort(401)
-    pass
-
-def show_photo():
-    pass
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):

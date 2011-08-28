@@ -1,13 +1,56 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class=photos>
-   {% for pic in tag.photos %}
-   <div class=photo>
-    <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}">
-    <div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="{{url_for( 'uploaded_file', filename=pic.filehash)}}" send="true" width="450" show_faces="true" font=""></fb:like> 
-   <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-   </div>
-   {% endfor %}
-<div>
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    $PHOTO_INDEX = 0;
+    $MAX_INDEX = {{ max_index }}
+</script>
+
+<div class=photo>
+    <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}" 
+        title="{{ pic.description }}" id=photo>
 </div>
+<div class=footer id=nombre>
+{{ pic.title }}
+</div>
+<div class=controls>
+<a href=# id=prev>Anterior</a>
+<a href=# id=next>Proxima</a>
+</div>
+
+<script type=text/javascript>
+function sucess(data)
+{
+    var target = $('#photo');
+    $PHOTO_INDEX=data.index;
+    console.log(data.index);
+    if ($PHOTO_INDEX > 0)
+        $('a#prev').show();
+    else
+        $('a#prev').hide();
+
+    if ($PHOTO_INDEX < $MAX_INDEX)
+        $('a#next').show();
+    else
+        $('a#next').hide();
+    
+    target.attr('src', data.url);
+    target.attr('title', data.description);
+    $('#nombre').text(data.title);
+}
+function get_photo() 
+{
+    var params = { action: this.id, tag: '{{tag.name}}', index: $PHOTO_INDEX} 
+    $.getJSON($SCRIPT_ROOT + '{{ url_for( 'get_json_photo' )}}',  params, sucess);
+    return false;
+}
+if ($MAX_INDEX == 0)
+{
+    $('a#next').hide();
+}
+$('a#prev').hide();
+$('a#prev').click(get_photo);
+$('a#next').click(get_photo);
+
+</script>
 {% endblock %}
