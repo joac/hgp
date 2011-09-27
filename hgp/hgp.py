@@ -33,7 +33,7 @@ def logged(f):
     return inner 
 
 
-
+@app.route('/')
 @app.route('/portfolio')
 def portfolio():
     """Muestra el portfolio con las fotos"""
@@ -91,9 +91,13 @@ def get_json_photo():
 def photos_by_tag(tag_name):
     """Lleva a la vista de fotos con ese tag"""
     tag = models.Tag.get_by(name=tag_name)
-    pic = tag.photos[0]
-    max_index = len(tag.photos) - 1  
-    return render_template('photo.html', tag = tag, pic=pic, max_index=max_index )
+    if tag and len(tag.photos):
+        pic = tag.photos[0]
+        max_index = len(tag.photos) - 1  
+        return render_template('photo.html', tag = tag, pic=pic, max_index=max_index )
+    else:
+        return "Falta crear template si no hay fotos con el tag crear un 404 custom" 
+
 
 @app.route('/tag/delete/<string:tag_name>')
 @logged

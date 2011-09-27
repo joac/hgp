@@ -1,11 +1,11 @@
 <!doctype html>
-<title>Happy Glorious Photo</title>
+<title>Hernan Pepe Photo</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
 <div class=page>
     <div class=header>
         <div class=logo>
-            <h1>Happy Glorious Photo</h1>
+            <img src={{ url_for('static', filename='logo.png')}}/>
         </div>
         <div class=menu>
             <a href="{{ url_for('portfolio') }}">PORTFOLIO</a>
@@ -14,23 +14,19 @@
             <a href="{{ url_for('contact') }}">CONTACTO</a>
         </div>
     </div>
+    {% if session.logged_in %}
     <div class=metanav>
-        {% if not session.logged_in %}
-            <a href="{{ url_for('login') }}">log in</a>
-        {% else %}
             <a href="{{ url_for('logout') }}">log out</a>
-        {% endif %}
     </div>
+    {% endif %}
     {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
     {% endfor %}
 
     {% block body %}{% endblock %}
+    {% if session.logged_in %}
     <div class=metanav>
-        {% if not session.logged_in %}
-            <a href="{{ url_for('login') }}">log in</a>
-        {% else %}
             <a href="{{ url_for('logout') }}">log out</a>
-        {% endif %}
     </div>
+    {% endif %}
 </div>
