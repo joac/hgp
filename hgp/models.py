@@ -1,8 +1,8 @@
 from elixir import *
 import datetime
-metadata.bind = "sqlite:///db.sqlite"
+#metadata.bind = "sqlite:///db.sqlite"
 #metadata.bind.echo = True
-
+metadata.bind = "mysql://c0hgp_client:test@localhost/c0sitio_hgp_db"
 class Photo(Entity):
     
     title = Field(Unicode(60))

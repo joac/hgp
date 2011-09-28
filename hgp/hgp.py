@@ -8,7 +8,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
 from werkzeug import secure_filename
 from functools import wraps
 
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = '/var/www/hernanpepe.com.ar/web/hgp/hgp/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'psd'])
 DEBUG = True
 SECRET_KEY = 'development key1'
