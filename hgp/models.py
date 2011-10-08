@@ -3,6 +3,7 @@ import datetime
 #metadata.bind = "sqlite:///db.sqlite"
 #metadata.bind.echo = True
 metadata.bind = "mysql://c0hgp_client:test@localhost/c0sitio_hgp_db"
+session.autocommit = True
 class Photo(Entity):
     
     title = Field(Unicode(60))
@@ -14,6 +15,9 @@ class Photo(Entity):
     
     def __repr__(self):
         return '<Foto "%s" de  galeria "%s" subida el %s>' % (self.title, self.gallery, self.timestamp)
+    
+    def get_tag_string(self):
+        return ', '.join([t.name for t in self.tags])
 
 
 class Tag(Entity):

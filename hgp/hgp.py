@@ -89,6 +89,8 @@ def get_json_photo():
         return_dict['description'] = photo.description
         return_dict['url'] = url_for('uploaded_file', filename=photo.filehash )
         return_dict['index'] = index
+        return_dict['borrar'] = url_for('erase_photo', photo_id=photo.id)
+        return_dict['editar'] = url_for('edit_photo', photo_id=photo.id)
         return jsonify(return_dict)
     abort(404)
 
@@ -150,6 +152,9 @@ def agregar_foto():
     return redirect( url_for('admin') )
 
 
+
+
+
 def procesar_tags(tag_string):
     
     tag_names = [b.strip() for b in tag_string.split(',') if b != '' ]
@@ -168,7 +173,19 @@ def procesar_tags(tag_string):
 @logged
 def edit_photo(photo_id):
     """Edita los datos para una foto especifica"""
-    pass
+    photo = models.Photo.query.filter_by(id=photo_id).one()
+    return render_template('edit.html', pic=photo)
+
+@app.route('/admin/update/<int:photo_id>', methods=['POST'])
+@logged
+def actualizar_foto(photo_id):
+    photo = models.Photo.query.filter_by(id=photo_id).one()
+    photo.title=request.form['title']
+    photo.description=request.form['description']
+    photo.tags=procesar_tags(request.form['tags'])
+    models.commit()
+    flash(u"La fotografía %s fue actualizada correctamente" % photo.title)
+    return redirect( url_for('admin') )
 
 @app.route('/admin/remove/<int:photo_id>')
 @logged
@@ -223,6 +240,10 @@ def logout():
     session.pop('logged_in', None)
     flash(u'Se desconecto del sistema')
     return redirect(url_for('login'))
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.run()

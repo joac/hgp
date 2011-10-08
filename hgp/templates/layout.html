@@ -1,7 +1,20 @@
 <!doctype html>
-<title>Hernan Pepe Photo</title>
+<head>
+<meta name="description" content="Hernan Pepe Portfolio" />
+<meta name="keywords" content="Hernan, Pepe, Fotografía, condor, Photo" />
+<meta name="author" content="Hernan Pepe" />
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta name="google-site-verification" content="9_6OmCLHS2ZSElRuH_eUAMjuRUJ-Fa95Du0osbb8WvQ" />
+<title>{% block page_title %}{% endblock %} | Hernan Pepe Photo</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='konami.js') }}"></script>
+<script type="text/javascript">
+    konami = new Konami()
+    konami.load("about");
+</script>
+</head>
+<body>
 <div class=page>
     <div class=header>
         <div class=logo>
@@ -31,3 +44,4 @@
     </div>
     {% endif %}
 </div>
+</body>

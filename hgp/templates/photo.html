@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% block page_title %}{{ tag.name.capitalize() }}{% endblock %}
 {% block body %}
 <script type=text/javascript>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
@@ -53,6 +54,8 @@ function sucess(data)
     target.attr('src', data.url);
     target.attr('title', data.description);
     $('#nombre').text(data.title);
+    $('#Editar').attr('href', data.editar);
+    $('#Borrar').attr('href', data.borrar);
 }
 function get_photo() 
 {
@@ -70,4 +73,11 @@ if ($MAX_INDEX > 0)
 
 
 </script>
+{% if session.logged_in %}
+    <br/>
+    <a id=Editar href={{url_for('edit_photo', photo_id=pic.id)}}>Editar</a>
+    <a id=Borrar href={{url_for('erase_photo', photo_id=pic.id)}} onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
+    <a href={{ url_for('admin') }}>Volver a Panel de Control</a>
+{% endif %}
+
 {% endblock %}
