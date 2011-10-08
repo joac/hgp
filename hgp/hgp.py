@@ -44,6 +44,11 @@ def condor():
     """Muestra las fotos con el tag condor"""
     return photos_by_tag(u'condor')
 
+@app.route('/vintage')
+def vintage():
+    """Muestra las fotos con el tag vintage"""
+    return photos_by_tag(u'vintage')
+
 @app.route('/press')
 def press():
     """Muestra las fotos con el tag prensa"""
@@ -52,7 +57,7 @@ def press():
 @app.route('/contact')
 def contact():
     """Muestra la información de contacto"""
-    pass
+    return photos_by_tag(u'contacto')
 
 
 @app.route('/photo/get')
@@ -84,7 +89,7 @@ def get_json_photo():
         return_dict['description'] = photo.description
         return_dict['url'] = url_for('uploaded_file', filename=photo.filehash )
         return_dict['index'] = index
-        return jsonify(return_dict);
+        return jsonify(return_dict)
     abort(404)
 
 @app.route('/photo/tag/<string:tag_name>')
@@ -96,8 +101,7 @@ def photos_by_tag(tag_name):
         max_index = len(tag.photos) - 1  
         return render_template('photo.html', tag = tag, pic=pic, max_index=max_index )
     else:
-        return "Falta crear template si no hay fotos con el tag crear un 404 custom" 
-
+        return render_template('error.html')
 
 @app.route('/tag/delete/<string:tag_name>')
 @logged

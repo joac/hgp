@@ -25,25 +25,39 @@ function sucess(data)
 {
     var target = $('#photo');
     $PHOTO_INDEX=data.index;
-    console.log(data.index);
     if ($PHOTO_INDEX > 0)
+    {
         $('a#prev').click(get_photo);
-   //     $('a#prev').show();
+        $('a#prev').show();
+    }
     else
+    {
         $('a#prev').unbind();
+        $('a#prev').hide();
+    }
 
     if ($PHOTO_INDEX < $MAX_INDEX)
-//        $('a#next').show();
+    {
         $('a#next').click(get_photo);
+        $('a#next').show();
+    }
     else
+    {
         $('a#next').unbind();
-    
+        $('a#next').hide();
+    }
+    target.load(function(){
+        $('.photo').removeClass('loading').append(this);
+        $(this).fadeIn("slow");
+        });
     target.attr('src', data.url);
     target.attr('title', data.description);
-    $('#nombre h3').text(data.title);
+    $('#nombre').text(data.title);
 }
 function get_photo() 
 {
+    $('.photo').addClass('loading');
+    $("#photo").fadeOut("slow");
     var params = { action: this.id, tag: '{{tag.name}}', index: $PHOTO_INDEX} 
     $.getJSON($SCRIPT_ROOT + '{{ url_for( 'get_json_photo' )}}',  params, sucess);
     return false;
@@ -51,6 +65,7 @@ function get_photo()
 if ($MAX_INDEX > 0)
 {
     $('a#next').click(get_photo);
+    $('a#prev').hide();
 }
 
 

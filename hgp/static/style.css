@@ -77,7 +77,7 @@ a:hover
     position: absolute;
     bottom: 22px;
     right:0px;
-    width:400px;
+    width:600px;
     }
 
 .flash { 
@@ -94,6 +94,26 @@ a:hover
     text-align: center;
     padding-top: 10px;
 }
+.photo.loading
+{
+    background: url(spinner.gif) no-repeat center center;
+    background-color: #fafafa;
+    width: 900px;
+    height: 596px;
+}
+.load_error
+{
+    padding-top: 10px;
+    width: 900px;
+    height: 596px;
+    text-align: center;
+}
+
+#error_text
+{
+    position: relative;
+    top: 50%;
+}
 
 .tags
 {
@@ -102,19 +122,27 @@ a:hover
 .controls_container
 {
     position: relative;
-    height: 15px
+    height: 15px;
+
 }
 .controls
 {
     position: absolute;
     right: 0;
+    width: 44px;
 }
 
 .button_l
 {
-    padding-left: 10px;
+    position: absolute;
+    width: 10px;
+    height: 16px;
+    right: 0px;
 }
 .button_r
 {
-    padding-right: 10px;
+    position: absolute;
+    width: 10px;
+    height: 16px;
+    left: 0px;
 }
