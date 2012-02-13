@@ -5,13 +5,7 @@ from flask import Flask, request, session, redirect, url_for, \
     abort, render_template, flash, send_from_directory, jsonify
 
 from functools import wraps
-
-UPLOAD_FOLDER = '/var/www/hernanpepe.com.ar/web/hgp/hgp/uploads'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'psd'])
-DEBUG = True
-SECRET_KEY = 'development key1'
-USERNAME = 'admin'
-PASSWORD = 'default'
+from settings import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 
 app = Flask(__name__)
 app.config.from_object(__name__)
