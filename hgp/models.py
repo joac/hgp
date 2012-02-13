@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
-
-import os
 import datetime
-
-from settings import UPLOAD_FOLDER
 
 from elixir import Field, ManyToMany, Entity, metadata, session, Unicode, \
      Integer, UnicodeText, DateTime, setup_all
 
-metadata.bind = 'sqlite://' + os.path.join(UPLOAD_FOLDER, 'db.sqlite')
+metadata.bind = 'sqlite:///db.sqlite'
 metadata.bind.echo = True
 # metadata.bind = "mysql://c0hgp_client:test@localhost/c0sitio_hgp_db"
 # session.autocommit = True
