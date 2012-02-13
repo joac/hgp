@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import models
 import os
 import hashlib
@@ -144,10 +147,10 @@ def agregar_foto():
         filename = os.path.join(UPLOAD_FOLDER, hashname)
         archive.save(filename)
         tags = procesar_tags(request.form['tags'])
-        photo = models.Photo(title=request.form['title'],
-                            description=request.form['description'],
-                            filehash=hashname,
-                            tags=tags)
+        models.Photo(title=request.form['title'],
+                     description=request.form['description'],
+                     filehash=hashname,
+                     tags=tags)
         models.commit()
         flash(u'Se subió el archivo: %s y se renombro: "%s"' % \
               (archive.filename, filename))
