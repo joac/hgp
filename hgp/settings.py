@@ -26,5 +26,10 @@ SECRET_KEY = 'development key1'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
+DATABASE = {
+    'name': 'sqlite3',
+    'path': 'sqlite:////home/humitos/apps/photos.humitox.com.ar/hgp/db.sqlite',
+}
+
 # Override the above settings
 from local_settings import *

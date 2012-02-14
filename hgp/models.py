@@ -4,10 +4,15 @@ import datetime
 from elixir import Field, ManyToMany, Entity, metadata, session, Unicode, \
      Integer, UnicodeText, DateTime, setup_all
 
-metadata.bind = 'sqlite:///db.sqlite'
-metadata.bind.echo = True
-# metadata.bind = "mysql://c0hgp_client:test@localhost/c0sitio_hgp_db"
-# session.autocommit = True
+from settings import DATABASE
+
+if DATABASE['name'] == 'sqlite3':
+    metadata.bind = DATABASE['path']
+    metadata.bind.echo = True
+elif DATABASE['name'] == 'mysql':
+    # metadata.bind = "mysql://c0hgp_client:test@localhost/c0sitio_hgp_db"
+    # session.autocommit = True
+    pass
 
 
 class Photo(Entity):
