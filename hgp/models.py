@@ -17,7 +17,7 @@ class Photo(Entity):
     title = Field(Unicode(60))
     timestamp = Field(Integer)
     description = Field(UnicodeText)
-    filehash = Field(Unicode(40))
+    filehash = Field(Unicode(50))
     timestamp = Field(DateTime, default=datetime.datetime.now)
     tags = ManyToMany('Tag')
 
