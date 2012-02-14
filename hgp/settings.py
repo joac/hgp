@@ -25,3 +25,6 @@ DEBUG = True
 SECRET_KEY = 'development key1'
 USERNAME = 'admin'
 PASSWORD = 'default'
+
+# Override the above settings
+from local_settings import *
