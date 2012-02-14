@@ -1,11 +1,11 @@
 <!doctype html>
 <head>
-<meta name="description" content="Hernan Pepe Portfolio" />
-<meta name="keywords" content="Hernan, Pepe, Fotografía, condor, Photo" />
-<meta name="author" content="Hernan Pepe" />
+<meta name="description" content="{{ META.description }}" />
+<meta name="keywords" content="{{ META.keywords }}" />
+<meta name="author" content="{{ META.author }}" />
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-<meta name="google-site-verification" content="9_6OmCLHS2ZSElRuH_eUAMjuRUJ-Fa95Du0osbb8WvQ" />
-<title>{% block page_title %}{% endblock %} | Hernan Pepe Photo</title>
+<meta name="google-site-verification" content="{{ GOOGLE_SITE_VERIFICATION }}" />
+<title>{% block page_title %}{% endblock %}{{ TITLE }}</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
 <script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
@@ -19,14 +19,12 @@
 <div class=page>
     <div class=header>
         <div class=logo>
-            <img src={{ url_for('static', filename='logo.png')}}/>
+            <img src={{ url_for('static', filename=LOGO)}}/>
         </div>
         <div class=menu>
-            <a href="{{ url_for('portfolio') }}">PORTFOLIO</a>
-            <a href="{{ url_for('condor') }}">CONDOR ANDINO</a>
-            <a href="{{ url_for('vintage') }}">VINTAGE</a>
-            <a href="{{ url_for('press') }}">PRENSA</a>
-            <a href="{{ url_for('contact') }}">CONTACTO</a>
+	  {%- for tag in TAGS %}
+            <a href="{{ url_for(tag.name) }}">{{ tag.display_name }}</a>
+          {%- endfor %}
         </div>
     </div>
     {% if session.logged_in %}

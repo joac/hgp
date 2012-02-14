@@ -9,10 +9,15 @@ from flask import Flask, request, session, redirect, url_for, \
 
 from functools import wraps
 from settings import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, DEBUG, \
-     USERNAME, PASSWORD, SECRET_KEY
+     USERNAME, PASSWORD, SECRET_KEY, TEMPLATE_VARIABLES
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+
+
+@app.context_processor
+def template_vars():
+    return TEMPLATE_VARIABLES
 
 
 @app.before_request
