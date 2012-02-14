@@ -6,13 +6,11 @@ from elixir import Field, ManyToMany, Entity, metadata, session, Unicode, \
 
 from settings import DATABASE
 
+metadata.bind = DATABASE['path']
 if DATABASE['name'] == 'sqlite3':
-    metadata.bind = DATABASE['path']
     metadata.bind.echo = True
 elif DATABASE['name'] == 'mysql':
-    # metadata.bind = "mysql://c0hgp_client:test@localhost/c0sitio_hgp_db"
-    # session.autocommit = True
-    pass
+    session.autocommit = True
 
 
 class Photo(Entity):
