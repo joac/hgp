@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 {% block page_title %}{{ tag.name.capitalize() }}{% endblock %}
 {% block body %}
-<script type=text/javascript>
+<script type="text/javascript">
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     $PHOTO_INDEX = 0;
     $MAX_INDEX = {{ max_index }}
 </script>
 
 <div class=photo>
-    <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}" 
+    <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}"
         title="{{ pic.description }}" id=photo>
 </div>
 <div class=controls_container>
@@ -21,14 +21,14 @@
 {{ pic.title }}
 </div>
 
-<script type=text/javascript>
+<script type="text/javascript">
 function sucess(data)
 {
     var target = $('#photo');
     $PHOTO_INDEX=data.index;
     if ($PHOTO_INDEX > 0)
     {
-        $('a#prev').click(get_photo);
+	$('a#prev').click(get_photo);
         $('a#prev').show();
     }
     else
@@ -57,14 +57,16 @@ function sucess(data)
     $('#Editar').attr('href', data.editar);
     $('#Borrar').attr('href', data.borrar);
 }
-function get_photo() 
+
+function get_photo()
 {
     $('.photo').addClass('loading');
     $("#photo").fadeOut("slow");
-    var params = { action: this.id, tag: '{{tag.name}}', index: $PHOTO_INDEX} 
+    var params = { action: this.id, tag: '{{tag.name}}', index: $PHOTO_INDEX}
     $.getJSON($SCRIPT_ROOT + '{{ url_for( 'get_json_photo' )}}',  params, sucess);
     return false;
 }
+
 if ($MAX_INDEX > 0)
 {
     $('a#next').click(get_photo);
