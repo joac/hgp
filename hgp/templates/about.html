@@ -2,13 +2,14 @@
 {% block page_title %}Sobre el sitio{% endblock %}
 {% block body %}
 <div class="load_error">
-<h1>Developed by</h1><a href="www.joaclandia.com.ar">Joaquín Sorianello</a>
+<h1>Developed by</h1>
+<a href="www.joaclandia.com.ar">Joaquín Sorianello</a>
 <h1>Powered by:</h1>
 <a href="http://flask.pocoo.org/"><img
    src="http://flask.pocoo.org/static/badges/flask-powered.png"
    border="0"
    alt="Flask powered"
-   title="Flask powered"></a>
+   title="Flask powered" /></a>
 <br/>
 <a href="http://www.python.org"><img src={{url_for('static', filename='python.png')}}/></a>
 <h1>Hosted by:</h1>
@@ -16,5 +17,4 @@
     <img src={{url_for('static', filename='gcoop.png')}} title="Gcoop Cooperativa de trabajo" alt="Gcoop Cooperativa de Trabajo"/>
     </a>
 </div>
-
 {% endblock %}
