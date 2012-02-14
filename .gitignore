@@ -1,3 +1,4 @@
 *.pyc
 *.sqlite
 /hgp/uploads/
+/hgp/.venv
