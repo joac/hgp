@@ -43,30 +43,6 @@ def portfolio():
     return photos_by_tag(u'portfolio')
 
 
-@app.route('/condor')
-def condor():
-    """Muestra las fotos con el tag condor"""
-    return photos_by_tag(u'condor')
-
-
-@app.route('/vintage')
-def vintage():
-    """Muestra las fotos con el tag vintage"""
-    return photos_by_tag(u'vintage')
-
-
-@app.route('/press')
-def press():
-    """Muestra las fotos con el tag prensa"""
-    return photos_by_tag(u'prensa')
-
-
-@app.route('/contact')
-def contact():
-    """Muestra la información de contacto"""
-    return photos_by_tag(u'contacto')
-
-
 @app.route('/photo/get')
 def get_json_photo():
     """Devuelve un diccionario json con el nombre, la descripcion,
@@ -103,6 +79,7 @@ def get_json_photo():
 
 
 @app.route('/photo/tag/<string:tag_name>')
+@app.route('/<string:tag_name>')
 def photos_by_tag(tag_name):
     """Lleva a la vista de fotos con ese tag"""
     tag = models.Tag.get_by(name=tag_name)
