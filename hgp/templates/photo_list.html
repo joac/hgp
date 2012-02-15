@@ -63,6 +63,13 @@ function sucess(data)
     $('#Editar').attr('href', data.editar);
     $('#Borrar').attr('href', data.borrar);
     $('#permalink').attr('href', data.permalink);
+    DISQUS.reset({
+	reload: true,
+	config: function () {
+	    this.page.identifier = data.id_photo;
+	    this.page.url = '{{ SITE }}' + data.url;
+	}
+    });
 }
 
 function get_photo()
