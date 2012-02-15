@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+{% block page_title %}{{ tag.name.capitalize() }}{% endblock %}
+{% block body %}
+<script type="text/javascript">
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    $PHOTO_INDEX = 0;
+    $MAX_INDEX = {{ max_index }}
+</script>
+
+<div class=photo>
+    <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}"
+        title="{{ pic.description }}" id=photo>
+</div>
+<div class="controls_container">
+<div class="controls">
+<a href="#" id="prev" class="button_r">
+  <img src="{{ url_for('static', filename='left.png') }}">
+</a>
+<a href="#" id="next" class="button_l">
+  <img src="{{ url_for('static', filename='right.png') }}">
+</a>
+<br />
+<a href="{{ pic.get_absolute_url() }}" id="permalink" class="button_l">Permalink</a>
+</div>
+</div>
+<div class=footer id=nombre>
+{{ pic.title }}
+</div>
+
+<script type="text/javascript">
+function sucess(data)
+{
+    var target = $('#photo');
+    $PHOTO_INDEX=data.index;
+    if ($PHOTO_INDEX > 0)
+    {
+	$('a#prev').click(get_photo);
+        $('a#prev').show();
+    }
+    else
+    {
+        $('a#prev').unbind();
+        $('a#prev').hide();
+    }
+
+    if ($PHOTO_INDEX < $MAX_INDEX)
+    {
+        $('a#next').click(get_photo);
+        $('a#next').show();
+    }
+    else
+    {
+        $('a#next').unbind();
+        $('a#next').hide();
+    }
+    target.load(function(){
+        $('.photo').removeClass('loading').append(this);
+        $(this).fadeIn("slow");
+        });
+    target.attr('src', data.url);
+    target.attr('title', data.description);
+    $('#nombre').text(data.title);
+    $('#Editar').attr('href', data.editar);
+    $('#Borrar').attr('href', data.borrar);
+    $('#permalink').attr('href', data.permalink);
+}
+
+function get_photo()
+{
+    $('.photo').addClass('loading');
+    $("#photo").fadeOut("slow");
+    var params = { action: this.id, tag: '{{tag.name}}', index: $PHOTO_INDEX}
+    $.getJSON($SCRIPT_ROOT + '{{ url_for( 'get_json_photo' )}}',  params, sucess);
+    return false;
+}
+
+if ($MAX_INDEX > 0)
+{
+    $('a#next').click(get_photo);
+    $('a#prev').hide();
+}
+
+
+</script>
+
+{% if session.logged_in %}
+    <br/>
+    <a id=Editar href={{url_for('edit_photo', photo_id=pic.id)}}>Editar</a>
+    <a id=Borrar href={{url_for('erase_photo', photo_id=pic.id)}} onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
+    <a href={{ url_for('admin') }}>Volver a Panel de Control</a>
+{% endif %}
+
+{% if DISQUS.enabled %}
+{% include "disqus.html" %}
+{% endif %}
+
+{% endblock %}

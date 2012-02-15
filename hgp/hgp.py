@@ -74,8 +74,19 @@ def get_json_photo():
         return_dict['index'] = index
         return_dict['borrar'] = url_for('erase_photo', photo_id=photo.id)
         return_dict['editar'] = url_for('edit_photo', photo_id=photo.id)
+        return_dict['permalink'] = photo.get_absolute_url()
         return jsonify(return_dict)
     abort(404)
+
+
+@app.route('/photo/<int:pk>')
+def photo_by_pk(pk):
+    """Show a specific Photography"""
+    pic = models.Photo.get_by(id=pk)
+    if pic:
+        return render_template('photo.html', pic=pic)
+    else:
+        return render_template('error.html')
 
 
 @app.route('/photo/tag/<string:tag_name>')
@@ -86,7 +97,7 @@ def photos_by_tag(tag_name):
     if tag and len(tag.photos):
         pic = tag.photos[0]
         max_index = len(tag.photos) - 1
-        return render_template('photo.html', tag=tag,
+        return render_template('photo_list.html', tag=tag,
                                pic=pic, max_index=max_index)
     else:
         return render_template('error.html')

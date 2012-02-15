@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+DEBUG = True
 
 TEMPLATE_VARIABLES = {
     'META': {
@@ -16,12 +17,17 @@ TEMPLATE_VARIABLES = {
         {'name': 'contact', 'display_name': 'CONTACTO'},
     ),
     'GOOGLE_SITE_VERIFICATION': '9_6OmCLHS2ZSElRuH_eUAMjuRUJ-Fa95Du0osbb8WvQ',
+    'DISQUS': {
+        'enabled': False,
+        'shortname': ''
+    },
+    'SITE': 'http://hernanpepe.com.ar',
+    'DEBUG': DEBUG,
 }
 
 UPLOAD_FOLDER = '/home/humitos/development/hgp/hgp/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'psd'])
 
-DEBUG = True
 SECRET_KEY = 'development key1'
 USERNAME = 'admin'
 PASSWORD = 'default'

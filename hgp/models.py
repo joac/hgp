@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
 
+from flask import url_for
+
 from elixir import Field, ManyToMany, Entity, metadata, session, Unicode, \
      Integer, UnicodeText, DateTime, setup_all
 
@@ -22,11 +24,14 @@ class Photo(Entity):
     tags = ManyToMany('Tag')
 
     def __repr__(self):
-        return '<Foto "%s" de  galeria "%s" subida el %s>' % \
-               (self.title, self.gallery, self.timestamp)
+        return '<Foto "%s" subida el %s>' % \
+               (self.title, self.timestamp)
 
     def get_tag_string(self):
         return ', '.join([t.name for t in self.tags])
+
+    def get_absolute_url(self):
+        return url_for('photo_by_pk', pk=self.id)
 
 
 class Tag(Entity):
