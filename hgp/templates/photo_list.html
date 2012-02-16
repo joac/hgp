@@ -34,23 +34,19 @@ function sucess(data)
     $PHOTO_INDEX=data.index;
     if ($PHOTO_INDEX > 0)
     {
-	$('a#prev').click(get_photo);
         $('a#prev').show();
     }
     else
     {
-        $('a#prev').unbind();
         $('a#prev').hide();
     }
 
     if ($PHOTO_INDEX < $MAX_INDEX)
     {
-        $('a#next').click(get_photo);
         $('a#next').show();
     }
     else
     {
-        $('a#next').unbind();
         $('a#next').hide();
     }
     target.load(function(){
@@ -83,11 +79,11 @@ function get_photo()
 
 if ($MAX_INDEX > 0)
 {
-    $('a#next').click(get_photo);
     $('a#prev').hide();
 }
 
-
+$('a#next').click(get_photo);
+$('a#prev').click(get_photo);
 </script>
 
 {% if session.logged_in %}
