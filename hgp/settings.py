@@ -22,6 +22,7 @@ TEMPLATE_VARIABLES = {
         'shortname': ''
     },
     'SITE': 'http://hernanpepe.com.ar',
+    'SITE_NAME': 'Hernan Pepe Photos',
     'DEBUG': DEBUG,
 }
 

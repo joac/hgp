@@ -1,5 +1,13 @@
 {% extends "layout.html" %}
 {% block page_title %}{{ pic.title.capitalize() }}{% endblock %}
+
+{% block meta_tags %}
+<meta name="og:title" content="{{ pic.title.capitalize() }}" />
+<meta name="og:image" content="{{ SITE }}{{ url_for( 'uploaded_file', filename=pic.filehash) }}" />
+<meta name="og:description" content="{{ pic.description }}" />
+<meta name="og:site_name" content="{{ SITE_NAME }}" />
+{% endblock %}
+
 {% block body %}
 <div class=photo>
     <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}"
