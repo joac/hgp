@@ -146,3 +146,9 @@ a:hover
     height: 16px;
     left: 0px;
 }
+.freedns
+{
+    font-family: Verdana,Helvetica,Arial;
+    font-size: 30px;
+    font-weight: bold;
+}
