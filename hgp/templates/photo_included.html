@@ -1,5 +1,5 @@
 <div class="photo">
-    <a href="{{ url_for( 'uploaded_file_original', filename=pic.filehash) }}" class="lightview"
+    <a id="photo-original" href="{{ url_for( 'uploaded_file_original', filename=pic.filehash) }}" class="lightview"
        data-lightview-title="{{ pic.title }}" data-lightview-caption="{{ pic.description }}">
       <img src="{{ url_for( 'uploaded_file_thumb', filename=pic.filehash) }}"
         title="{{ pic.description }}" id="photo"></a>

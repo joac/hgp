@@ -73,6 +73,8 @@ def get_json_photo():
         return_dict['description'] = photo.description
         return_dict['url'] = url_for('uploaded_file_thumb',
                                      filename=photo.filehash)
+        return_dict['url_original'] = url_for('uploaded_file_original',
+                                     filename=photo.filehash)
         return_dict['index'] = index
         return_dict['borrar'] = url_for('erase_photo', photo_id=photo.id)
         return_dict['editar'] = url_for('edit_photo', photo_id=photo.id)

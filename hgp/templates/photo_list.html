@@ -22,7 +22,7 @@
 <a href="{{ pic.get_absolute_url() }}" id="permalink" class="button_l">Permalink</a>
 </div>
 </div>
-<div class=footer id=nombre>
+<div class="footer" id="nombre">
 {{ pic.title }}
 </div>
 
@@ -30,6 +30,7 @@
 function sucess(data)
 {
     var target = $('#photo');
+    var target_original = $('#photo-original');
     $PHOTO_INDEX=data.index;
     if ($PHOTO_INDEX > 0)
     {
@@ -54,6 +55,11 @@ function sucess(data)
         });
     target.attr('src', data.url);
     target.attr('title', data.description);
+
+    target_original.attr('href', data.url_original);
+    target_original.attr('data-lightview-title', data.title);
+    target_original.attr('data-lightview-caption', data.description);
+
     $('#nombre').text(data.title);
     $('#Editar').attr('href', data.editar);
     $('#Borrar').attr('href', data.borrar);
