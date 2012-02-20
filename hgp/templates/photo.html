@@ -10,25 +10,25 @@
 
 {% block body %}
 <div class=photo>
-    <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}"
-        title="{{ pic.description }}" id=photo>
+    <img src="{{ url_for( 'uploaded_file_thumb', filename=pic.filehash) }}"
+        title="{{ pic.description }}" id="photo">
 </div>
 
-<div class=controls_container>
-  <div class=controls>
+<div class="controls_container">
+  <div class="controls">
     <a href="/">BACK</a>
   </div>
 </div>
 
-<div class=footer id=nombre>
+<div class="footer" id="nombre">
 {{ pic.title }}
 </div>
 
 {% if session.logged_in %}
     <br/>
-    <a id=Editar href={{url_for('edit_photo', photo_id=pic.id)}}>Editar</a>
-    <a id=Borrar href={{url_for('erase_photo', photo_id=pic.id)}} onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
-    <a href={{ url_for('admin') }}>Volver a Panel de Control</a>
+    <a id="Editar" href="{{ url_for('edit_photo', photo_id=pic.id) }}">Editar</a>
+    <a id="Borrar" href="{{ url_for('erase_photo', photo_id=pic.id) }}" onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
+    <a href="{{ url_for('admin') }}">Volver a Panel de Control</a>
 {% endif %}
 
 {% if DISQUS.enabled %}

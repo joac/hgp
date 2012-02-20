@@ -3,24 +3,24 @@
 <!-- cambiar para que permita agregar fotos -->
 <div class="add_form">
     <h2>Editar Foto</h2>
-    <form action="{{ url_for('actualizar_foto', photo_id=pic.id) }}" method=post class=add-photo enctype=multipart/form-data>
+    <form action="{{ url_for('actualizar_foto', photo_id=pic.id) }}" method="post" class="add-photo" enctype="multipart/form-data">
         <dl>
             <dt>Titulo:
-            <dd><input type=text size=50 name=title value="{{ pic.title }}">
+            <dd><input type="text" size="50" name="title" value="{{ pic.title }}" />
             <dt>Descripcion:
-            <dd><textarea name=description rows=5 cols=40>{{ pic.description }}</textarea>
+            <dd><textarea name="description" rows="5" cols="40">{{ pic.description }}</textarea>
             <dt>Tags:
-            <dd><input type=text size=50 name=tags value="{{ pic.get_tag_string()}}">
-            <dd><input type=submit value=Actualizar>
+            <dd><input type="text" size="50" name="tags" value="{{ pic.get_tag_string()}}" />
+            <dd><input type="submit" value="Actualizar">
         </dl>
     </form>
 </div>
 <div class=photo>
-    <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}" 
-        title="{{ pic.description }}" id=photo>
+    <img src="{{ url_for( 'uploaded_file_thumb ', filename=pic.filehash) }}" 
+        title="{{ pic.description }}" id="photo">
 </div>
 <div class="admin_menu">
-<a href={{url_for('erase_photo', photo_id=pic.id)}} onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
-<a href="{{url_for('admin')}}">Volver al Panel de Control</a>
+<a href="{{ url_for('erase_photo', photo_id=pic.id) }}" onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
+<a href="{{ url_for('admin') }}">Volver al Panel de Control</a>
 </div>
 {% endblock %}

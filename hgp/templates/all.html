@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class=photos>
+<div class="photos">
    {% for pic in photos %}
-   <div class=photo_container>
+   <div class="photo_container">
     <h2>{{ pic.title }}</h2> 
-    <img class=photo alt="{{ pic.description|safe }}" title="{{ pic.description|safe }}" src={{url_for( 'uploaded_file', filename=pic.filehash)}} >
+    <img class="photo" alt="{{ pic.description|safe }}" title="{{ pic.description|safe }}" src="{{ url_for( 'uploaded_file_thumb', filename=pic.filehash) }}" >
     <br/>
-    <a href={{url_for('edit_photo', photo_id=pic.id)}}>Editar</a>
-    <a href={{url_for('erase_photo', photo_id=pic.id)}} onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
+    <a href="{{ url_for('edit_photo', photo_id=pic.id) }}">Editar</a>
+    <a href="{{ url_for('erase_photo', photo_id=pic.id) }}" onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
    </div>
    {% endfor %}
 <div>
-<a href={{ url_for('admin') }}>Volver a Panel de Control</a>
+<a href="{{ url_for('admin') }}">Volver a Panel de Control</a>
 {% endblock %}
 

@@ -8,7 +8,7 @@
 </script>
 
 <div class=photo>
-    <img src="{{url_for( 'uploaded_file', filename=pic.filehash)}}"
+    <img src="{{ url_for( 'uploaded_file_thumb', filename=pic.filehash) }}"
         title="{{ pic.description }}" id=photo>
 </div>
 <div class="controls_container">

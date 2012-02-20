@@ -4,6 +4,7 @@
 import models
 import os
 import hashlib
+from PIL import Image
 from flask import Flask, request, session, redirect, url_for, \
     abort, render_template, flash, send_from_directory, jsonify
 
@@ -70,7 +71,8 @@ def get_json_photo():
         photo = tag.photos[index]
         return_dict['title'] = photo.title
         return_dict['description'] = photo.description
-        return_dict['url'] = url_for('uploaded_file', filename=photo.filehash)
+        return_dict['url'] = url_for('uploaded_file_thumb',
+                                     filename=photo.filehash)
         return_dict['index'] = index
         return_dict['borrar'] = url_for('erase_photo', photo_id=photo.id)
         return_dict['editar'] = url_for('edit_photo', photo_id=photo.id)
@@ -135,12 +137,22 @@ def ver_todas_las_fotos():
 def agregar_foto():
     """Agrega una foto nueva"""
     archive = request.files['file']
+    landscape = 'landscape' in request.form.keys()
     if allowed_file(archive.filename):
         hashname = hashlib.sha1(archive.read()).hexdigest()
         archive.seek(0)
         hashname += '.' + get_file_extension(archive.filename)
+        photo = Image.open(archive)
+        if not landscape:
+            width = photo.size[0] * 800 / photo.size[1]
+            size = (width, 800)
+        else:
+            height = photo.size[1] * 800 / photo.size[0]
+            size = (800, height)
+        photo_thumb = photo.resize(size, Image.ANTIALIAS)
         filename = os.path.join(UPLOAD_FOLDER, hashname)
-        archive.save(filename)
+        photo_thumb.save(filename)
+        photo.save(os.path.join(UPLOAD_FOLDER, 'originals', hashname))
         tags = procesar_tags(request.form['tags'])
         models.Photo(title=request.form['title'],
                      description=request.form['description'],
@@ -205,6 +217,7 @@ def erase_photo(photo_id):
 ###################################################
 def delete_uploaded(name):
     os.unlink(os.path.join(UPLOAD_FOLDER, name))
+    os.unlink(os.path.join(UPLOAD_FOLDER, 'originals', name))
 
 
 def get_file_extension(filename):
@@ -217,9 +230,16 @@ def allowed_file(filename):
 
 
 @app.route('/uploads/<filename>')
-def uploaded_file(filename):
+def uploaded_file_thumb(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                    filename)
+
+
+@app.route('/uploads/original/<filename>')
+def uploaded_file_original(filename):
+    path = os.path.join(app.config['UPLOAD_FOLDER'], 'originals')
+    return send_from_directory(path,
+                               filename)
 
 
 ###################################################
