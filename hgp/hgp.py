@@ -237,7 +237,7 @@ def uploaded_file_thumb(filename):
                                    filename)
 
 
-@app.route('/uploads/original/<filename>')
+@app.route('/uploads/originals/<filename>')
 def uploaded_file_original(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], 'originals')
     return send_from_directory(path,
