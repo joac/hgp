@@ -12,6 +12,8 @@ from functools import wraps
 from settings import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, DEBUG, \
      USERNAME, PASSWORD, SECRET_KEY, TEMPLATE_VARIABLES
 
+from sqlalchemy import desc
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 
@@ -38,6 +40,19 @@ def logged(f):
 
 
 @app.route('/')
+def home():
+    """Muestra todas las fotos en orden cronologico descendente"""
+    photos = models.Photo.query.order_by(desc(models.Photo.timestamp))
+    if photos and len(photos.all()):
+        session['photos'] = photos.all()
+        pic = photos[0]
+        max_index = len(photos.all()) - 1
+        return render_template('photo_list.html',
+                               pic=pic, max_index=max_index)
+    else:
+        return render_template('error.html')
+
+
 @app.route('/portfolio')
 def portfolio():
     """Muestra el portfolio con las fotos"""
@@ -50,13 +65,12 @@ def get_json_photo():
         la url y el id de una foto"""
 
     action = request.args.get('action', None, type=str)
-    tag = request.args.get('tag', None, type=str)
     index = request.args.get('index', None, type=int)
     actions = ['prev', 'next']
 
-    if action in actions and tag is not None and index is not None:
-        tag = models.Tag.get_by(name=unicode(tag))
-        max_index = len(tag.photos) - 1
+    if action in actions and index is not None:
+        photos = session['photos']
+        max_index = len(photos) - 1
         if action == 'prev' and index > 0:
             index -= 1
         elif action == 'next' and index < max_index:
@@ -68,7 +82,7 @@ def get_json_photo():
             index = max_index
 
         return_dict = {}
-        photo = tag.photos[index]
+        photo = photos[index]
         return_dict['title'] = photo.title
         return_dict['description'] = photo.description
         return_dict['url'] = url_for('uploaded_file_thumb',
@@ -100,6 +114,7 @@ def photos_by_tag(tag_name):
     """Lleva a la vista de fotos con ese tag"""
     tag = models.Tag.get_by(name=tag_name)
     if tag and len(tag.photos):
+        session['photos'] = list(tag.photos)
         pic = tag.photos[0]
         max_index = len(tag.photos) - 1
         return render_template('photo_list.html', tag=tag,

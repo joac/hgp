@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block page_title %}{{ tag.name.capitalize() }}{% endblock %}
+{% block page_title %}{% if tag %}{{ tag.name.capitalize() }}{% else %}Home{% endif %}{% endblock %}
 
 {% block body %}
 <script type="text/javascript">
@@ -80,7 +80,7 @@ function get_photo()
 {
     $('.photo').addClass('loading');
     $("#photo").fadeOut("slow");
-    var params = { action: this.id, tag: '{{ tag.name|safe }}', index: $PHOTO_INDEX}
+    var params = {action: this.id, index: $PHOTO_INDEX};
     $.getJSON($SCRIPT_ROOT + '{{ url_for( 'get_json_photo' )}}',  params, sucess);
     return false;
 }
