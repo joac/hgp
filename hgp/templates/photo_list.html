@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block page_title %}{{ tag.name.capitalize() }}{% endblock %}
+
 {% block body %}
 <script type="text/javascript">
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
@@ -8,8 +9,9 @@
 </script>
 
 <div class=photo>
-    <img src="{{ url_for( 'uploaded_file_thumb', filename=pic.filehash) }}"
-        title="{{ pic.description }}" id=photo>
+    <a href="{{ url_for( 'uploaded_file_original', filename=pic.filehash) }}" class="lightview">
+      <img src="{{ url_for( 'uploaded_file_thumb', filename=pic.filehash) }}"
+        title="{{ pic.description }}" id="photo"></a>
 </div>
 <div class="controls_container">
 <div class="controls">
