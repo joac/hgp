@@ -19,9 +19,14 @@
   <img src="{{ url_for('static', filename='right.png') }}">
 </a>
 <br />
-<a href="{{ pic.get_absolute_url() }}" id="permalink" class="button_l">Permalink</a>
 </div>
 </div>
+
+<ul style="text-align: right; list-style: none;">
+  <li><a href="{{ pic.get_absolute_url() }}" id="permalink">Permalink</a></li>
+  <li><a href="{{ url_for('uploaded_file_original', filename=pic.filehash) }}" id="original-size">Tamaño original</a></li>
+</ul>
+
 <div class="footer" id="nombre">
 {{ pic.title }}
 </div>
@@ -30,7 +35,6 @@
 function sucess(data)
 {
     var target = $('#photo');
-    var target_original = $('#photo-original');
     $PHOTO_INDEX=data.index;
     if ($PHOTO_INDEX > 0)
     {
@@ -55,11 +59,6 @@ function sucess(data)
         });
     target.attr('src', data.url);
     target.attr('title', data.description);
-
-    target_original.attr('href', data.url_original);
-    target_original.attr('data-lightview-title', data.title);
-    target_original.attr('data-lightview-caption', data.description);
-
     $('#nombre').text(data.title);
     $('#Editar').attr('href', data.editar);
     $('#Borrar').attr('href', data.borrar);

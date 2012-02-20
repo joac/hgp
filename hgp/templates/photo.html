@@ -12,11 +12,10 @@
 
 {% include "photo_included.html" %}
 
-<div class="controls_container">
-  <div class="controls">
-    <a href="/">BACK</a>
-  </div>
-</div>
+<ul style="text-align: right; list-style: none;">
+  <li><a href="/" id="permalink">Back</a></li>
+  <li><a href="{{ url_for('uploaded_file_original', filename=pic.filehash) }}" id="original-size">Tamaño original</a></li>
+</ul>
 
 <div class="footer" id="nombre">
 {{ pic.title }}
