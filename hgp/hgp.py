@@ -117,9 +117,11 @@ def photo_by_pk(pk):
 def photos_by_tag(tag_name):
     """Lleva a la vista de fotos con ese tag"""
     tag = models.Tag.get_by(name=tag_name)
-    if tag and len(tag.photos):
-        session['photos'] = list(tag.photos)
-        pic = tag.photos[0]
+    photos = models.Photo.query.filter(models.Photo.tags.any(name=tag_name)) \
+                               .order_by(desc(models.Photo.timestamp)).all()
+    if tag and len(photos):
+        session['photos'] = list(photos)
+        pic = photos[0]
         max_index = len(tag.photos) - 1
         return render_template('photo_list.html', tag=tag,
                                pic=pic, max_index=max_index)
