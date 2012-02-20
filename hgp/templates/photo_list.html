@@ -68,11 +68,19 @@ function sucess(data)
     });
 }
 
-function get_photo()
+function get_photo(element)
 {
+
+    if (!element){
+	alert('entro');
+	element = $(this);
+    }
+
+    alert(element);
+
     $('.photo').addClass('loading');
     $("#photo").fadeOut("slow");
-    var params = { action: this.id, tag: '{{tag.name}}', index: $PHOTO_INDEX}
+    var params = { action: element.attr('id'), tag: '{{ tag.name|safe }}', index: $PHOTO_INDEX}
     $.getJSON($SCRIPT_ROOT + '{{ url_for( 'get_json_photo' )}}',  params, sucess);
     return false;
 }
@@ -84,6 +92,17 @@ if ($MAX_INDEX > 0)
 
 $('a#next').click(get_photo);
 $('a#prev').click(get_photo);
+
+$(document).keydown(function(event){
+    if (event.keyCode == 39 ) {
+	get_photo($('a#next'));
+	return false;
+    }
+    if (event.keyCode == 37) {
+	get_photo($('a#prev'));
+	return false;
+    }
+});
 </script>
 
 {% if session.logged_in %}
