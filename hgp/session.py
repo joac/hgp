@@ -1,5 +1,5 @@
 ### Implement filesystem session store
-from flask import Flask,
+from flask import Flask
 from werkzeug.contrib.sessions import FilesystemSessionStore
 
 session_store = FilesystemSessionStore()
