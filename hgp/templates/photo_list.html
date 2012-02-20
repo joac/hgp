@@ -8,11 +8,8 @@
     $MAX_INDEX = {{ max_index }}
 </script>
 
-<div class=photo>
-    <a href="{{ url_for( 'uploaded_file_original', filename=pic.filehash) }}" class="lightview">
-      <img src="{{ url_for( 'uploaded_file_thumb', filename=pic.filehash) }}"
-        title="{{ pic.description }}" id="photo"></a>
-</div>
+{% include "photo_included.html" %}
+
 <div class="controls_container">
 <div class="controls">
 <a href="#" id="prev" class="button_r">
