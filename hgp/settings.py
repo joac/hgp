@@ -17,6 +17,7 @@ TEMPLATE_VARIABLES = {
         {'name': 'contact', 'display_name': 'CONTACTO'},
     ),
     'GOOGLE_SITE_VERIFICATION': '9_6OmCLHS2ZSElRuH_eUAMjuRUJ-Fa95Du0osbb8WvQ',
+    'GOOGLE_ANALYTICS': '',
     'DISQUS': {
         'enabled': False,
         'shortname': ''
