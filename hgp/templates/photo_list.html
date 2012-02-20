@@ -24,7 +24,8 @@
 
 <ul style="text-align: right; list-style: none;">
   <li><a href="{{ pic.get_absolute_url() }}" id="permalink">Permalink</a></li>
-  <li><a href="{{ url_for('uploaded_file_original', filename=pic.filehash) }}" id="original-size">Tamaño original</a></li>
+  <li><a target="_blank" href="{{ url_for('uploaded_file_original', filename=pic.filehash) }}" 
+	 id="original-size">Tamaño original</a></li>
 </ul>
 
 <div class="footer" id="nombre">
