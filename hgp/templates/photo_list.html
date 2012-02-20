@@ -57,6 +57,9 @@ function sucess(data)
         $('.photo').removeClass('loading').append(this);
         $(this).fadeIn("slow");
         });
+
+    $('#original-size').attr('href', data.original_url);
+
     target.attr('src', data.url);
     target.attr('title', data.description);
     $('#nombre').text(data.title);
