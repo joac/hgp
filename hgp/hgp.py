@@ -5,7 +5,7 @@ import models
 import os
 import hashlib
 from PIL import Image
-from flask import Flask, request, session, redirect, url_for, \
+from flask import request, session, redirect, url_for, \
     abort, render_template, flash, send_from_directory, jsonify
 
 from functools import wraps
@@ -14,7 +14,11 @@ from settings import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, DEBUG, \
 
 from sqlalchemy import desc
 
-app = Flask(__name__)
+# Handle session in the filesystem instead with cookies
+from session import FlaskSess
+
+
+app = FlaskSess(__name__)
 app.config.from_object(__name__)
 
 
