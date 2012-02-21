@@ -71,7 +71,7 @@ function sucess(data)
 	reload: true,
 	config: function () {
 	    this.page.identifier = data.id_photo;
-	    this.page.url = '{{ SITE }}' + data.url;
+	    this.page.url = '{{ SITE }}' + data.permalink;
 	}
     });
 }
