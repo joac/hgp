@@ -21,7 +21,7 @@ from session import FlaskSess
 # http://mail.python.org/pipermail/image-sig/2009-January/005369.html
 # http://mail.python.org/pipermail/image-sig/2009-January/005370.html
 # http://mail.python.org/pipermail/image-sig/1999-August/000816.html
-import ImageFile
+from PIL import ImageFile
 ImageFile.MAXBLOCK = 1000000  # default is 64k
 
 app = FlaskSess(__name__)
