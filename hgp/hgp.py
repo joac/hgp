@@ -174,8 +174,9 @@ def agregar_foto():
             size = (800, height)
         photo_thumb = photo.resize(size, Image.ANTIALIAS)
         filename = os.path.join(UPLOAD_FOLDER, hashname)
-        photo_thumb.save(filename)
-        photo.save(os.path.join(UPLOAD_FOLDER, 'originals', hashname))
+        photo_thumb.save(filename, quality=95, optimize=True)
+        photo.save(os.path.join(UPLOAD_FOLDER, 'originals', hashname),
+                   quality=95, optimize=True)
         tags = procesar_tags(request.form['tags'])
         models.Photo(title=request.form['title'],
                      description=request.form['description'],
