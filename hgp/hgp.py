@@ -17,13 +17,6 @@ from sqlalchemy import desc
 # Handle session in the filesystem instead with cookies
 from session import FlaskSess
 
-
-# http://mail.python.org/pipermail/image-sig/2009-January/005369.html
-# http://mail.python.org/pipermail/image-sig/2009-January/005370.html
-# http://mail.python.org/pipermail/image-sig/1999-August/000816.html
-from PIL import ImageFile
-ImageFile.MAXBLOCK = 1000000  # default is 64k
-
 app = FlaskSess(__name__)
 app.config.from_object(__name__)
 
@@ -180,9 +173,9 @@ def agregar_foto():
             size = (800, height)
         photo_thumb = photo.resize(size, Image.ANTIALIAS)
         filename = os.path.join(UPLOAD_FOLDER, hashname)
-        photo_thumb.save(filename, quality=95, optimize=True)
+        photo_thumb.save(filename, quality=98)
         photo.save(os.path.join(UPLOAD_FOLDER, 'originals', hashname),
-                   quality=95, optimize=True)
+                   quality=98)
         tags = procesar_tags(request.form['tags'])
         models.Photo(title=request.form['title'],
                      description=request.form['description'],
