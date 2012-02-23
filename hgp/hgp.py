@@ -98,7 +98,8 @@ def get_json_photo():
         return_dict['permalink'] = photo.get_absolute_url()
         return_dict['id_photo'] = photo.id
         return_dict['tags'] = [tag.name for tag in models.Tag.query\
-                               .filter(models.Photo.id == photo.id)]
+                               .filter(models.Tag.photos\
+                                       .any(models.Photo.id == photo.id))]
         return jsonify(return_dict)
     abort(404)
 
