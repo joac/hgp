@@ -2,7 +2,7 @@
 {% block page_title %}{{ pic.title.capitalize() }}{% endblock %}
 
 {% block meta_tags %}
-<meta name="og:title" content="{{ pic.title.capitalize() }}" />
+<meta name="og:title" content="{{ pic.title }}" />
 <meta name="og:image" content="{{ SITE }}{{ url_for( 'uploaded_file_thumb', filename=pic.filehash) }}" />
 <meta name="og:description" content="{{ pic.description }}" />
 <meta name="og:site_name" content="{{ SITE_NAME }}" />
