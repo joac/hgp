@@ -10,6 +10,14 @@
 
 {% include "photo_included.html" %}
 
+<div id="photo-tags">
+  <ul id="photo-tags-list">
+    {% for tag in pic.tags %}
+    <li><a href="{{ url_for('photos_by_tag', tag_name=tag.name) }}">{{ tag.name }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
 <div class="controls_container">
 <div class="controls">
 <a href="#" id="prev" class="button_r">
@@ -67,6 +75,12 @@ function sucess(data)
     $('#Editar').attr('href', data.editar);
     $('#Borrar').attr('href', data.borrar);
     $('#permalink').attr('href', data.permalink);
+
+    var photo_tags_list = $('#photo-tags-list')
+    photo_tags_list.html('')
+    $.each(data.tags, function(i, tag){
+	photo_tags_list.append('<li><a href="/' + tag + '">' + tag + '</a></li>');
+    });
 
     // Track this new page with Google Analytics
     _gaq.push(['_trackPageview', data.permalink]);

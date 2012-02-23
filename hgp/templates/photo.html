@@ -12,6 +12,14 @@
 
 {% include "photo_included.html" %}
 
+<div id="photo-tags">
+  <ul id="photo-tags-list">
+    {% for tag in pic.tags %}
+    <li><a href="{{ url_for('photos_by_tag', tag_name=tag.name) }}">{{ tag.name }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
 <ul style="text-align: right; list-style: none;">
   <li><a href="/" id="permalink">Back</a></li>
   <li><a href="{{ url_for('uploaded_file_original', filename=pic.filehash) }}" id="original-size">Tamaño original</a></li>

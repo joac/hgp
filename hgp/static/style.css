@@ -152,3 +152,21 @@ a:hover
     font-size: 30px;
     font-weight: bold;
 }
+#photo-tags ul li
+{
+    background-color: #e3e3e3;
+    border: 1px;
+    border-style: dashed;
+    border-color: #bababa;
+    padding: 5px;
+    text-transform: uppercase;
+    float: left;
+    font-size: 11px;
+    margin: 3px;
+}
+#photo-tags ul
+{
+    list-style: none;
+    display: inline;
+    float: left;
+}
