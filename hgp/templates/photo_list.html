@@ -67,6 +67,10 @@ function sucess(data)
     $('#Editar').attr('href', data.editar);
     $('#Borrar').attr('href', data.borrar);
     $('#permalink').attr('href', data.permalink);
+
+    // Track this new page with Google Analytics
+    _gaq.push(['_trackPageview', '{{ SITE }}' + data.permalink]);
+
     DISQUS.reset({
 	reload: true,
 	config: function () {
