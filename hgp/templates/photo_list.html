@@ -69,7 +69,7 @@ function sucess(data)
     $('#permalink').attr('href', data.permalink);
 
     // Track this new page with Google Analytics
-    _gaq.push(['_trackPageview', '{{ SITE }}' + data.permalink]);
+    _gaq.push(['_trackPageview', data.permalink]);
 
     DISQUS.reset({
 	reload: true,
