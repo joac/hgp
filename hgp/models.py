@@ -1,23 +1,37 @@
-from elixir import *
+# -*- coding: utf-8 -*-
 import datetime
-#metadata.bind = "sqlite:///db.sqlite"
-#metadata.bind.echo = True
-metadata.bind = "mysql://c0hgp_client:test@localhost/c0sitio_hgp_db"
-session.autocommit = True
+
+from flask import url_for
+
+from elixir import Field, ManyToMany, Entity, metadata, session, Unicode, \
+     Integer, UnicodeText, DateTime, setup_all
+
+from settings import DATABASE
+
+metadata.bind = DATABASE['path']
+if DATABASE['name'] == 'sqlite3':
+    metadata.bind.echo = True
+elif DATABASE['name'] == 'mysql':
+    session.autocommit = True
+
+
 class Photo(Entity):
-    
     title = Field(Unicode(60))
     timestamp = Field(Integer)
     description = Field(UnicodeText)
-    filehash = Field(Unicode(40))
-    timestamp = Field(DateTime, default=datetime.datetime.now) 
+    filehash = Field(Unicode(50))
+    timestamp = Field(DateTime, default=datetime.datetime.now)
     tags = ManyToMany('Tag')
-    
+
     def __repr__(self):
-        return '<Foto "%s" de  galeria "%s" subida el %s>' % (self.title, self.gallery, self.timestamp)
-    
+        return '<Foto "%s" subida el %s>' % \
+               (self.title, self.timestamp)
+
     def get_tag_string(self):
         return ', '.join([t.name for t in self.tags])
+
+    def get_absolute_url(self):
+        return url_for('photo_by_pk', pk=self.id)
 
 
 class Tag(Entity):
@@ -30,8 +44,10 @@ class Tag(Entity):
     def __repr__(self):
         return '<Tag "%s">' % self.name
 
+
 def setupDb():
     setup_all()
+
 
 def commit():
     session.commit()

@@ -1,3 +1,6 @@
 *.pyc
 *.sqlite
+*~
 /hgp/uploads/
+/hgp/.venv
+/hgp/local_settings.py

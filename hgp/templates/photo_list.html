@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{% block page_title %}{% if tag %}{{ tag.name.capitalize() }}{% else %}Home{% endif %}{% endblock %}
+
+{% block body %}
+<script type="text/javascript">
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    $PHOTO_INDEX = 0;
+    $MAX_INDEX = {{ max_index }}
+</script>
+
+{% include "photo_included.html" %}
+
+<div id="photo-tags">
+  <ul id="photo-tags-list">
+    {% for tag in pic.tags %}
+    <li><a href="{{ url_for('photos_by_tag', tag_name=tag.name) }}">{{ tag.name }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="controls_container">
+<div class="controls">
+<a href="#" id="prev" class="button_r">
+  <img src="{{ url_for('static', filename='left.png') }}">
+</a>
+<a href="#" id="next" class="button_l">
+  <img src="{{ url_for('static', filename='right.png') }}">
+</a>
+<br />
+</div>
+</div>
+
+<ul style="text-align: right; list-style: none;">
+  <li><a href="{{ pic.get_absolute_url() }}" id="permalink">Permalink</a></li>
+  <li><a target="_blank" href="{{ url_for('uploaded_file_original', filename=pic.filehash) }}" 
+	 id="original-size">Tamaño original</a></li>
+</ul>
+
+<div class="footer" id="nombre">
+{{ pic.title }}
+</div>
+
+<script type="text/javascript">
+function sucess(data)
+{
+    var target = $('#photo');
+    $PHOTO_INDEX=data.index;
+    if ($PHOTO_INDEX > 0)
+    {
+        $('a#prev').show();
+    }
+    else
+    {
+        $('a#prev').hide();
+    }
+
+    if ($PHOTO_INDEX < $MAX_INDEX)
+    {
+        $('a#next').show();
+    }
+    else
+    {
+        $('a#next').hide();
+    }
+    target.load(function(){
+        $('.photo').removeClass('loading').append(this);
+        $(this).fadeIn("slow");
+        });
+
+    $('#original-size').attr('href', data.url_original);
+
+    target.attr('src', data.url);
+    target.attr('title', data.description);
+    $('#nombre').text(data.title);
+    $('#Editar').attr('href', data.editar);
+    $('#Borrar').attr('href', data.borrar);
+    $('#permalink').attr('href', data.permalink);
+
+    var photo_tags_list = $('#photo-tags-list')
+    photo_tags_list.html('')
+    $.each(data.tags, function(i, tag){
+	photo_tags_list.append('<li><a href="/' + tag + '">' + tag + '</a></li>');
+    });
+
+    // Track this new page with Google Analytics
+    _gaq.push(['_trackPageview', data.permalink]);
+
+    DISQUS.reset({
+	reload: true,
+	config: function () {
+	    this.page.identifier = data.id_photo;
+	    this.page.url = '{{ SITE }}' + data.permalink;
+	}
+    });
+}
+
+function get_photo()
+{
+    $('.photo').addClass('loading');
+    $("#photo").fadeOut("slow");
+    var params = {action: this.id, index: $PHOTO_INDEX};
+    $.getJSON($SCRIPT_ROOT + '{{ url_for( 'get_json_photo' )}}',  params, sucess);
+    return false;
+}
+
+if ($MAX_INDEX > 0)
+{
+    $('a#prev').hide();
+}
+
+$('a#next').click(get_photo);
+$('a#prev').click(get_photo);
+</script>
+
+{% if session.logged_in %}
+    <br/>
+    <a id=Editar href={{url_for('edit_photo', photo_id=pic.id)}}>Editar</a>
+    <a id=Borrar href={{url_for('erase_photo', photo_id=pic.id)}} onclick="return confirm('¿Esta seguro que desea borrar la foto?');">Borrar</a>
+    <a href={{ url_for('admin') }}>Volver a Panel de Control</a>
+{% endif %}
+
+{% if DISQUS.enabled %}
+{% include "disqus.html" %}
+{% endif %}
+
+{% endblock %}
