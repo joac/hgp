@@ -91,11 +91,20 @@ def process_tags(tag_string):
         flash(u'Se creó el tag "%s"' % tag)
     return tags
 
+
+
 # TODO Implementar una query custom para videos y fotos
 # la idea es que permita obtener  todos los elementos por tag usando la api Rest
 # TODO implementar en javascript el manejador de galeria usando jquery
 # TODO armar helper para videos de Vimeo y youtube
 # TODO botones sociales
+# TODO Vistas gallery
+# Las urls van a ser de la forma tag/nombretag/nombrefoto_1
+# La galeria tiene que ir cambiando la url cuando cambia la fotos
+# Solo hay una vista de galeria, todo el resto de la interaccion se define
+# usando la api RestAPI
+# Terminar abm de fotos
+# TODO convertir el campo de tags a un field de WTF forms
 
 
 
