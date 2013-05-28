@@ -5,6 +5,7 @@ from flask.ext.bootstrap import Bootstrap
 from flask_peewee.db import Database
 from flask_peewee.auth import Auth
 from flask_peewee.admin import Admin
+from flask_peewee.rest import RestAPI
 from forms import PhotoForm, VideoForm
 
 DATABASE = {
@@ -50,9 +51,6 @@ def update_photo():
                 process_tags(form.tags.data),
                 form.weight.data,
                 )
-
-
-
         return redirect(url_for('index'))
     else:
 
@@ -63,7 +61,18 @@ def update_photo():
 def update_video():
     form = VideoForm()
     if form.validate_on_submit():
+        video = models.Video(
+                   title=form.name.data,
+                   description=form.description.data,
+                   url=form.url.data,
+                   source=form.source.data,
+                )
 
+        video.save()
+        video.save_tags(
+                process_tags(form.tags.data),
+                form.weight.data,
+                )
         return redirect(url_for('index'))
     else:
 
@@ -82,10 +91,17 @@ def process_tags(tag_string):
         flash(u'Se creó el tag "%s"' % tag)
     return tags
 
+# TODO Implementar una query custom para videos y fotos
+# la idea es que permita obtener  todos los elementos por tag usando la api Rest
+# TODO implementar en javascript el manejador de galeria usando jquery
+# TODO armar helper para videos de Vimeo y youtube
+# TODO botones sociales
 
 
 
 if __name__ == '__main__':
+    api = RestAPI(app)
+    api.register(models.Tag)
     auth.register_admin(admin)
     admin.register(models.Video)
     admin.register(models.Photo)
@@ -93,4 +109,5 @@ if __name__ == '__main__':
     admin.register(models.PhotoTag)
     admin.register(models.VideoTag)
     admin.setup()
+    api.setup()
     app.run()
