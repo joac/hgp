@@ -1,0 +1,8 @@
+{% extends "bootstrap_responsive.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+{% block body_content %}
+
+{{ wtf.quick_form(form, action=url_for('update_video'), buttons=[('submit',
+'primary', 'Save')]) }} 
+
+{% endblock %}

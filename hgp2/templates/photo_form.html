@@ -1,0 +1,19 @@
+{% extends "bootstrap_responsive.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+{% block body_content %}
+
+
+<form action="{{ url_for('update_photo') }}" method="post" class="form, form-horizontal" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  {{ wtf.form_errors(form, 'only') }}
+  {%- for field in form %}
+    {% if not field|bootstrap_is_hidden_field %}
+        {{ wtf.horizontal_field(field) }}
+    {%- endif %}
+  {%- endfor %}
+  <div class="form-actions">
+    <button name="submit" type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>
+
+{% endblock %}
